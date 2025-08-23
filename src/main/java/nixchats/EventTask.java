@@ -1,3 +1,5 @@
+package nixchats;
+
 public class EventTask extends Task {
 
     String fromTime;

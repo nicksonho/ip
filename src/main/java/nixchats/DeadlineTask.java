@@ -1,3 +1,5 @@
+package nixchats;
+
 public class DeadlineTask extends Task {
 
     String byTime;
