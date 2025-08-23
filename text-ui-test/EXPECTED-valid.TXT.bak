@@ -20,42 +20,27 @@ Usage:
 
 ____________________________________________________________
 You: ____________________________________________________________
-Got it, I have added: [T][ ] read book
-____________________________________________________________
-You: ____________________________________________________________
-Got it, I have added: [D][ ] submit report (by: tonight)
-____________________________________________________________
-You: ____________________________________________________________
-Got it, I have added: [E][ ] project meeting (from: Mon 2pm to: Mon 4pm)
-____________________________________________________________
-You: ____________________________________________________________
 Here are the tasks in your list:
-1. [T][ ] read book
-2. [D][ ] submit report (by: tonight)
-3. [E][ ] project meeting (from: Mon 2pm to: Mon 4pm)
+____________________________________________________________
+You: Got it, I have added: [T][ ] read book
+____________________________________________________________
+You: Got it, I have added: [D][ ] homework (by: tonight)
+____________________________________________________________
+You: Got it, I have added: [E][ ] project meeting (from: 2pm to: 4pm)
 ____________________________________________________________
 You: ____________________________________________________________
 Nice! I've marked this task as done:
-  [D][X] submit report (by: tonight)
-____________________________________________________________
-You: ____________________________________________________________
-Here are the tasks in your list:
-1. [T][ ] read book
-2. [D][X] submit report (by: tonight)
-3. [E][ ] project meeting (from: Mon 2pm to: Mon 4pm)
+  [D][X] homework (by: tonight)
 ____________________________________________________________
 You: ____________________________________________________________
 OK, I've marked this task as not done yet:
-  [D][ ] submit report (by: tonight)
+  [D][ ] homework (by: tonight)
 ____________________________________________________________
 You: ____________________________________________________________
 Here are the tasks in your list:
 1. [T][ ] read book
-2. [D][ ] submit report (by: tonight)
-3. [E][ ] project meeting (from: Mon 2pm to: Mon 4pm)
-____________________________________________________________
-You: ____________________________________________________________
-I'm sorry, but I don't know what that means.
+2. [D][ ] homework (by: tonight)
+3. [E][ ] project meeting (from: 2pm to: 4pm)
 ____________________________________________________________
 You: ____________________________________________________________
 Bye. Hope to see you again soon!

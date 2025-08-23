@@ -1,0 +1,8 @@
+todo
+deadline homework
+event party /from 5pm
+foobar
+mark
+mark abc
+unmark 42
+bye

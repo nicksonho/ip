@@ -19,43 +19,22 @@ Usage:
     - Exit the application.
 
 ____________________________________________________________
-You: ____________________________________________________________
-Got it, I have added: [T][ ] read book
+You: The description of a todo cannot be empty.
+____________________________________________________________
+You: Missing '/by'. Usage: deadline <desc> /by <when>
+____________________________________________________________
+You: Missing '/to'. Usage: event <desc> /from <start> /to <end>
+____________________________________________________________
+You: I'm sorry, but I don't know what that means.
 ____________________________________________________________
 You: ____________________________________________________________
-Got it, I have added: [D][ ] submit report (by: tonight)
+Please provide the task number, e.g., "mark 2".
 ____________________________________________________________
 You: ____________________________________________________________
-Got it, I have added: [E][ ] project meeting (from: Mon 2pm to: Mon 4pm)
+Task number must be a positive integer.
 ____________________________________________________________
 You: ____________________________________________________________
-Here are the tasks in your list:
-1. [T][ ] read book
-2. [D][ ] submit report (by: tonight)
-3. [E][ ] project meeting (from: Mon 2pm to: Mon 4pm)
-____________________________________________________________
-You: ____________________________________________________________
-Nice! I've marked this task as done:
-  [D][X] submit report (by: tonight)
-____________________________________________________________
-You: ____________________________________________________________
-Here are the tasks in your list:
-1. [T][ ] read book
-2. [D][X] submit report (by: tonight)
-3. [E][ ] project meeting (from: Mon 2pm to: Mon 4pm)
-____________________________________________________________
-You: ____________________________________________________________
-OK, I've marked this task as not done yet:
-  [D][ ] submit report (by: tonight)
-____________________________________________________________
-You: ____________________________________________________________
-Here are the tasks in your list:
-1. [T][ ] read book
-2. [D][ ] submit report (by: tonight)
-3. [E][ ] project meeting (from: Mon 2pm to: Mon 4pm)
-____________________________________________________________
-You: ____________________________________________________________
-I'm sorry, but I don't know what that means.
+Task number out of range. You have 0 task(s).
 ____________________________________________________________
 You: ____________________________________________________________
 Bye. Hope to see you again soon!

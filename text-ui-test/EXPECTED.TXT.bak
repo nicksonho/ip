@@ -19,14 +19,11 @@ Usage:
     - Exit the application.
 
 ____________________________________________________________
-You: ____________________________________________________________
-Got it, I have added: [T][ ] read book
+You: Got it, I have added: [T][ ] read book
 ____________________________________________________________
-You: ____________________________________________________________
-Got it, I have added: [D][ ] submit report (by: tonight)
+You: Got it, I have added: [D][ ] submit report (by: tonight)
 ____________________________________________________________
-You: ____________________________________________________________
-Got it, I have added: [E][ ] project meeting (from: Mon 2pm to: Mon 4pm)
+You: Got it, I have added: [E][ ] project meeting (from: Mon 2pm to: Mon 4pm)
 ____________________________________________________________
 You: ____________________________________________________________
 Here are the tasks in your list:
@@ -54,8 +51,7 @@ Here are the tasks in your list:
 2. [D][ ] submit report (by: tonight)
 3. [E][ ] project meeting (from: Mon 2pm to: Mon 4pm)
 ____________________________________________________________
-You: ____________________________________________________________
-I'm sorry, but I don't know what that means.
+You: I'm sorry, but I don't know what that means.
 ____________________________________________________________
 You: ____________________________________________________________
 Bye. Hope to see you again soon!
