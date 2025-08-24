@@ -19,13 +19,17 @@ Usage:
     - Exit the application.
 
 ____________________________________________________________
-You: The description of a todo cannot be empty.
+You: ____________________________________________________________
+The description of a todo cannot be empty.
 ____________________________________________________________
-You: Missing '/by'. Usage: deadline <desc> /by <when>
+You: ____________________________________________________________
+Missing '/by'. Usage: deadline <desc> /by <when>
 ____________________________________________________________
-You: Missing '/to'. Usage: event <desc> /from <start> /to <end>
+You: ____________________________________________________________
+Missing '/to'. Usage: event <desc> /from <start> /to <end>
 ____________________________________________________________
-You: I'm sorry, but I don't know what that means.
+You: ____________________________________________________________
+I'm sorry, but I don't know what that means.
 ____________________________________________________________
 You: ____________________________________________________________
 Please provide the task number, e.g., "mark 2".

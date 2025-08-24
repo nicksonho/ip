@@ -46,6 +46,11 @@ public class NixChats {
                     int idx = parseTaskIndex(line, list.size());
                     list.get(idx).unmarkAsNotDone();
                     Greetings.divider();
+                } else if (line.startsWith("delete")) {
+                    Greetings.divider();
+                    int idx = parseTaskIndex(line, list.size());
+                    deleteTask(list, idx);
+                    Greetings.divider();
                 } else {
                     Greetings.divider();
                     System.out.println("Got it, I have added: " + addTask(list, line).toString());
@@ -185,8 +190,9 @@ public class NixChats {
         return new EventTask(desc, from, to);
     }
 
-
-
-
+    private static void deleteTask(List<Task> list, int index) {
+        System.out.println("Got it, deleted task " + list.get(index));
+        list.remove(index);
+    }
 }
 
