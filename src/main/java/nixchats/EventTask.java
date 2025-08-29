@@ -1,18 +1,25 @@
 package nixchats;
 
 public class EventTask extends Task {
+    private final String from;
+    private final String to;
 
-    String fromTime;
-    String toTime;
-
-    public EventTask(String description, String fromTime, String toTime) {
+    public EventTask(String description, String from, String to) {
         super(description);
-        this.fromTime = fromTime;
-        this.toTime = toTime;
+        this.from = from;
+        this.to = to;
+    }
+
+    public String getFrom() {
+        return from;
+    }
+
+    public String getTo() {
+        return to;
     }
 
     @Override
     public String toString() {
-        return "[E]" + super.toString() + " (from: " + this.fromTime + " to: "  + this.toTime + ")";
+        return "[E]" + super.toString() + " (from: " + from + " to: " + to + ")";
     }
 }

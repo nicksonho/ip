@@ -25,6 +25,20 @@ public abstract class Task {
         System.out.println("  " + this.toString());
     }
 
+    // --- Added: minimal accessors for storage ---
+    public String getDescription() {
+        return description;
+    }
+
+    public boolean isDone() {
+        return isDone;
+    }
+
+    // Package-private silent setter for decoding (no prints)
+    void setDoneSilent(boolean done) {
+        this.isDone = done;
+    }
+
     @Override
     public String toString() {
         return "[" + getStatusIcon() + "] " + description;
