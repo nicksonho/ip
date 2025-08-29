@@ -1,10 +1,15 @@
 package nixchats;
 
+import nixchats.exception.NixChatsException;
 import nixchats.ui.Greetings;
 import nixchats.exception.InputException;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 public class NixChats {
     public static void main(String[] args) {
@@ -19,9 +24,14 @@ public class NixChats {
         }
     }
 
-    public static void chat() {
+    public static void chat() throws NixChatsException, IOException {
         Scanner sc = new Scanner(System.in);
-        List<Task> list = new ArrayList<>();
+        Path filePath = Paths.get("data", "NixChatHistory.txt");
+        Storage storage = new Storage(filePath);
+        List<Task> list = storage.load();
+        for (Task task : list) {
+            System.out.println(task.toString());
+        }
         while (true) {
             System.out.print("You: ");
             String input = sc.nextLine();
@@ -69,6 +79,7 @@ public class NixChats {
                 Greetings.divider();
             }
         }
+        storage.save(list);
         sc.close();
     }
 

@@ -1,16 +1,19 @@
 package nixchats;
 
 public class DeadlineTask extends Task {
+    private final String by;
 
-    String byTime;
-
-    public DeadlineTask(String description, String byTime) {
+    public DeadlineTask(String description, String by) {
         super(description);
-        this.byTime = byTime;
+        this.by = by;
+    }
+
+    public String getBy() {
+        return by;
     }
 
     @Override
     public String toString() {
-        return "[D]" + super.toString() + " (by: " + this.byTime + ")";
+        return "[D]" + super.toString() + " (by: " + by + ")";
     }
 }
