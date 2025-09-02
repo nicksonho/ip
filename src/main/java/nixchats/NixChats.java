@@ -5,6 +5,8 @@ import nixchats.ui.Greetings;
 import nixchats.exception.InputException;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -170,7 +172,18 @@ public class NixChats {
         }
         String desc = parts[0].trim();
         String by = parts[1].trim();
-        return new DeadlineTask(desc, by);
+
+        try {
+            LocalDate byDate = LocalDate.parse(by);
+
+            DateTimeFormatter outFmt = DateTimeFormatter.ofPattern("MMM d yyyy");
+            String byDisplay =byDate.format(outFmt);
+
+            return new DeadlineTask(desc, byDisplay);
+        } catch (java.time.format.DateTimeParseException ex) {
+            throw new InputException(InputException.Reason.INVALID_ARGUMENT,
+                    "Invalid date format. Please use yyyy-MM-dd (e.g., 2025-01-31).");
+        }
     }
 
     private static EventTask getEventTask(String trimmed) throws InputException {
@@ -198,8 +211,26 @@ public class NixChats {
         String from = toParts[0].trim();
         String to = toParts[1].trim();
 
-        return new EventTask(desc, from, to);
+        try {
+            LocalDate fromDate = LocalDate.parse(from); // expects yyyy-MM-dd
+            LocalDate toDate = LocalDate.parse(to);     // expects yyyy-MM-dd
+
+            if (toDate.isBefore(fromDate)) {
+                throw new InputException(InputException.Reason.INVALID_ARGUMENT,
+                        "End date must be on or after the start date.");
+            }
+
+            DateTimeFormatter outFmt = DateTimeFormatter.ofPattern("MMM d yyyy");
+            String fromDisplay = fromDate.format(outFmt);
+            String toDisplay = toDate.format(outFmt);
+
+            return new EventTask(desc, fromDisplay, toDisplay);
+        } catch (java.time.format.DateTimeParseException ex) {
+            throw new InputException(InputException.Reason.INVALID_ARGUMENT,
+                    "Invalid date format. Please use yyyy-MM-dd (e.g., 2025-01-31).");
+        }
     }
+
 
     private static void deleteTask(List<Task> list, int index) {
         System.out.println("Got it, deleted task " + list.get(index));
