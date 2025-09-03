@@ -1,9 +1,10 @@
-package nixchats.data;
+package nixchats.storage;
 
 import nixchats.DeadlineTask;
 import nixchats.EventTask;
 import nixchats.Task;
 import nixchats.ToDoTask;
+import nixchats.data.TaskList;
 import nixchats.exception.NixChatsException;
 
 import java.io.BufferedWriter;
@@ -11,7 +12,6 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -40,7 +40,7 @@ public class Storage {
      * One task per line, fields separated by "|".
      * @throws NixChatsException if the file cannot be written.
      */
-    public void save(List<Task> list) throws NixChatsException {
+    public void save(TaskList list) throws NixChatsException {
         try (BufferedWriter writer = Files.newBufferedWriter(filePath, StandardCharsets.UTF_8)) {
             for (Task t : list) {
                 writer.write(encode(t));
@@ -56,8 +56,8 @@ public class Storage {
      * @return List of tasks read from the file.
      * @throws NixChatsException if the file cannot be read.
      */
-    public List<Task> load() throws NixChatsException {
-        List<Task> result = new ArrayList<>();
+    public TaskList load() throws NixChatsException {
+        TaskList result = new TaskList();
         try {
             if (Files.notExists(filePath)) {
                 ensureFileExists();
@@ -71,7 +71,7 @@ public class Storage {
                     continue;
                 }
                 Task t = decode(line);
-                result.add(t);
+                result.addTask(t);
             }
             return result;
         } catch (IOException e) {
