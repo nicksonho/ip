@@ -1,5 +1,9 @@
-package nixchats;
+package nixchats.data;
 
+import nixchats.DeadlineTask;
+import nixchats.EventTask;
+import nixchats.Task;
+import nixchats.ToDoTask;
 import nixchats.exception.NixChatsException;
 
 import java.io.BufferedWriter;
@@ -85,11 +89,9 @@ public class Storage {
         String done = t.isDone() ? "1" : "0";
         if (t instanceof ToDoTask) {
             return String.join(" | ", "T", done, t.getDescription());
-        } else if (t instanceof DeadlineTask) {
-            DeadlineTask d = (DeadlineTask) t;
+        } else if (t instanceof DeadlineTask d) {
             return String.join(" | ", "D", done, d.getDescription(), d.getBy());
-        } else if (t instanceof EventTask) {
-            EventTask e = (EventTask) t;
+        } else if (t instanceof EventTask e) {
             return String.join(" | ", "E", done, e.getDescription(), e.getFrom(), e.getTo());
         } else {
             // Fallback: store as a plain todo
@@ -110,24 +112,18 @@ public class Storage {
         switch (type) {
             case "T": {
                 String desc = parts[2];
-                ToDoTask t = new ToDoTask(desc);
-                t.setDoneSilent(done);
-                return t;
+                return new ToDoTask(desc, done);
             }
             case "D": {
                 String desc = parts[2];
                 String by = parts[3];
-                DeadlineTask d = new DeadlineTask(desc, by);
-                d.setDoneSilent(done);
-                return d;
+                return new DeadlineTask(desc, done, by);
             }
             case "E": {
                 String desc = parts[2];
                 String from = parts[3];
                 String to = parts[4];
-                EventTask e = new EventTask(desc, from, to);
-                e.setDoneSilent(done);
-                return e;
+                return new EventTask(desc, done, from, to);
             }
             default:
                 throw new IllegalArgumentException("Unknown task type: " + type);

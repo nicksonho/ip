@@ -3,8 +3,8 @@ package nixchats;
 public class DeadlineTask extends Task {
     private final String by;
 
-    public DeadlineTask(String description, String by) {
-        super(description);
+    public DeadlineTask(String description, boolean isDone, String by) {
+        super(description, isDone);
         this.by = by;
     }
 

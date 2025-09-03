@@ -1,12 +1,12 @@
 package nixchats;
 
 public abstract class Task {
-    protected String description;
-    protected boolean isDone;
+    private final String description;
+    private boolean isDone;
 
-    public Task(String description) {
+    public Task(String description, boolean isDone) {
         this.description = description;
-        this.isDone = false;
+        this.isDone = isDone;
     }
 
     public String getStatusIcon() {
@@ -25,18 +25,12 @@ public abstract class Task {
         System.out.println("  " + this.toString());
     }
 
-    // --- Added: minimal accessors for storage ---
     public String getDescription() {
         return description;
     }
 
     public boolean isDone() {
         return isDone;
-    }
-
-    // Package-private silent setter for decoding (no prints)
-    void setDoneSilent(boolean done) {
-        this.isDone = done;
     }
 
     @Override

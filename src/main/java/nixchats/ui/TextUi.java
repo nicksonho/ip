@@ -1,7 +1,7 @@
 package nixchats.ui;
 
 public class TextUi {
-    public static String DIVIDER = "____________________________________________________________";
+    public static String DIVIDER = "==========================================================";
     public static String GREETING =
             """
                                     Hello! I'm NixChats, a chatbot that can help you track your tasks!

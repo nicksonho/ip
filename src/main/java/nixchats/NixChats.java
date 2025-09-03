@@ -1,13 +1,13 @@
 package nixchats;
 
+import nixchats.data.Storage;
 import nixchats.exception.NixChatsException;
-import nixchats.ui.Greetings;
+import nixchats.ui.TextUi;
 import nixchats.exception.InputException;
 
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 import java.nio.file.Path;
@@ -15,14 +15,14 @@ import java.nio.file.Paths;
 
 public class NixChats {
     public static void main(String[] args) {
-        Greetings.greet();
+        System.out.println(TextUi.GREETING);
         try {
             chat();
         } catch (Exception e) {
             // Last resort: prevent crash on truly unexpected issues.
             System.out.println("An unexpected error occurred. Please try again.");
         } finally {
-            Greetings.exit();
+            System.out.println(TextUi.EXIT);
         }
     }
 
@@ -31,9 +31,16 @@ public class NixChats {
         Path filePath = Paths.get("data", "NixChatHistory.txt");
         Storage storage = new Storage(filePath);
         List<Task> list = storage.load();
-        for (Task task : list) {
-            System.out.println(task.toString());
+
+        if (list.isEmpty()) {
+            System.out.println("Congrats, you have completed all your tasks!");
+        } else {
+            System.out.println("Here are your current tasks:");
+            for (Task task : list) {
+                System.out.println(task.toString());
+            }
         }
+
         while (true) {
             System.out.print("You: ");
             String input = sc.nextLine();
@@ -42,43 +49,43 @@ public class NixChats {
                 if (line.equalsIgnoreCase("bye")) {
                     break;
                 } else if (line.equalsIgnoreCase("list")) {
-                    Greetings.divider();
+                    System.out.println(TextUi.DIVIDER);
                     System.out.println("Here are the tasks in your list:");
                     for (int i = 0; i < list.size(); i++) {
                         System.out.println((i + 1) + ". " + list.get(i));
                     }
-                    Greetings.divider();
+                    System.out.println(TextUi.DIVIDER);
                 } else if (line.startsWith("mark")) {
-                    Greetings.divider();
+                    System.out.println(TextUi.DIVIDER);
                     int idx = parseTaskIndex(line, list.size());
                     list.get(idx).markAsDone();
-                    Greetings.divider();
+                    System.out.println(TextUi.DIVIDER);
                 } else if (line.startsWith("unmark")) {
-                    Greetings.divider();
+                    System.out.println(TextUi.DIVIDER);
                     int idx = parseTaskIndex(line, list.size());
                     list.get(idx).unmarkAsNotDone();
-                    Greetings.divider();
+                    System.out.println(TextUi.DIVIDER);
                 } else if (line.startsWith("delete")) {
-                    Greetings.divider();
+                    System.out.println(TextUi.DIVIDER);
                     int idx = parseTaskIndex(line, list.size());
                     deleteTask(list, idx);
-                    Greetings.divider();
+                    System.out.println(TextUi.DIVIDER);
                 } else {
-                    Greetings.divider();
+                    System.out.println(TextUi.DIVIDER);
                     System.out.println("Got it, I have added: " + addTask(list, line).toString());
-                    Greetings.divider();
+                    System.out.println(TextUi.DIVIDER);
                 }
             } catch (InputException e) {
                 System.out.println(e.getMessage());
-                Greetings.divider();
+                System.out.println(TextUi.DIVIDER);
             } catch (IllegalArgumentException e) {
                 // User input error (missing arg, bad number, out of range, etc.)
                 System.out.println(e.getMessage());
-                Greetings.divider();
+                System.out.println(TextUi.DIVIDER);
             } catch (Exception e) {
                 // Last-resort guard so the loop doesn't die on unexpected issues
                 System.out.println("An unexpected error occurred. Please try again.");
-                Greetings.divider();
+                System.out.println(TextUi.DIVIDER);
             }
         }
         storage.save(list);
@@ -135,7 +142,7 @@ public class NixChats {
                 throw new InputException(InputException.Reason.MISSING_ARGUMENT,
                         "The description of a todo cannot be empty.");
             }
-            ToDoTask task = new ToDoTask(desc);
+            ToDoTask task = new ToDoTask(desc, false);
             list.add(task);
             return task;
         }
@@ -160,6 +167,24 @@ public class NixChats {
     }
 
     private static DeadlineTask getDeadlineTask(String trimmed) throws InputException {
+        String[] parts = getStrings(trimmed);
+        String desc = parts[0].trim();
+        String by = parts[1].trim();
+
+        try {
+            LocalDate byDate = LocalDate.parse(by);
+
+            DateTimeFormatter outFmt = DateTimeFormatter.ofPattern("MMM d yyyy");
+            String byDisplay =byDate.format(outFmt);
+
+            return new DeadlineTask(desc, false, byDisplay);
+        } catch (java.time.format.DateTimeParseException ex) {
+            throw new InputException(InputException.Reason.INVALID_ARGUMENT,
+                    "Invalid date format. Please use yyyy-MM-dd (e.g., 2025-01-31).");
+        }
+    }
+
+    private static String[] getStrings(String trimmed) throws InputException {
         String rest = trimmed.length() <= 8 ? "" : trimmed.substring(8).trim(); // after "deadline"
         if (rest.isEmpty()) {
             throw new InputException(InputException.Reason.MISSING_ARGUMENT,
@@ -170,20 +195,7 @@ public class NixChats {
             throw new InputException(InputException.Reason.INVALID_ARGUMENT,
                     "Missing '/by'. Usage: deadline <desc> /by <when>");
         }
-        String desc = parts[0].trim();
-        String by = parts[1].trim();
-
-        try {
-            LocalDate byDate = LocalDate.parse(by);
-
-            DateTimeFormatter outFmt = DateTimeFormatter.ofPattern("MMM d yyyy");
-            String byDisplay =byDate.format(outFmt);
-
-            return new DeadlineTask(desc, byDisplay);
-        } catch (java.time.format.DateTimeParseException ex) {
-            throw new InputException(InputException.Reason.INVALID_ARGUMENT,
-                    "Invalid date format. Please use yyyy-MM-dd (e.g., 2025-01-31).");
-        }
+        return parts;
     }
 
     private static EventTask getEventTask(String trimmed) throws InputException {
@@ -224,7 +236,7 @@ public class NixChats {
             String fromDisplay = fromDate.format(outFmt);
             String toDisplay = toDate.format(outFmt);
 
-            return new EventTask(desc, fromDisplay, toDisplay);
+            return new EventTask(desc, false, fromDisplay, toDisplay);
         } catch (java.time.format.DateTimeParseException ex) {
             throw new InputException(InputException.Reason.INVALID_ARGUMENT,
                     "Invalid date format. Please use yyyy-MM-dd (e.g., 2025-01-31).");
