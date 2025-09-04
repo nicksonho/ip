@@ -13,13 +13,13 @@ public abstract class Task {
         return (isDone ? "X" : " "); // mark done task with X
     }
 
-    void markAsDone() {
+    public void markAsDone() {
         isDone = true;
         System.out.println("Nice! I've marked this task as done:");
         System.out.println("  " + this.toString());
     }
 
-    void unmarkAsNotDone() {
+    public void unmarkAsNotDone() {
         isDone = false;
         System.out.println("OK, I've marked this task as not done yet:");
         System.out.println("  " + this.toString());
