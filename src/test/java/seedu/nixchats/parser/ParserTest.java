@@ -105,7 +105,7 @@ public class ParserTest {
     void parseTask_validTodoInput_createsCorrectTask() throws InputException {
         Task task = Parser.parseTask("todo read book");
 
-        assertTrue(task instanceof ToDoTask);
+        assertInstanceOf(ToDoTask.class, task);
         assertEquals("read book", task.getDescription());
         assertFalse(task.isDone());
         assertTrue(task.toString().contains("[T]"));
@@ -129,7 +129,7 @@ public class ParserTest {
     void parseTask_validDeadlineInput_createsCorrectTask() throws InputException {
         Task task = Parser.parseTask("deadline submit assignment /by 2025-01-31");
 
-        assertTrue(task instanceof DeadlineTask);
+        assertInstanceOf(DeadlineTask.class, task);
         assertEquals("submit assignment", task.getDescription());
         assertFalse(task.isDone());
         assertTrue(task.toString().contains("[D]"));
