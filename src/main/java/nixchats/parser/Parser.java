@@ -198,6 +198,33 @@ public class Parser {
         }
     }
 
+    /**
+     * Extracts the command from the input line.
+     * Returns the first word in lowercase, or "unknown" if the line is empty.
+     *
+     * @param line the input command string
+     * @return the first word (command) in lowercase
+     */
+    public static String getCommand(String line) {
+        if (line.isBlank()) {
+            return "unknown";
+        }
+        String[] parts = line.split("\\s+", 2);
+        return parts[0].toLowerCase();
+    }
+
+    /**
+     * Extracts the keyword from a command line like "find book".
+     * Returns the part after the command, or empty string if no keyword is provided.
+     *
+     * @param line the input command string
+     * @return the keyword part after the command, or empty string if none
+     */
+    public static String getKeyword(String line) {
+        String[] parts = line.split("\\s+", 2);
+        return parts.length > 1 ? parts[1].trim() : "";
+    }
+
 
 
 }

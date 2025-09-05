@@ -8,7 +8,6 @@ import nixchats.exception.InputException;
 import nixchats.parser.Parser;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.Scanner;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -46,49 +45,75 @@ public class NixChats {
             String input = sc.nextLine();
             String line = input == null ? "" : input.trim();
             try {
-                if (line.equalsIgnoreCase("bye")) {
+                String command = Parser.getCommand(line);
+                switch (command) {
+                case "bye":
                     break;
-                } else if (line.equalsIgnoreCase("list")) {
-                    System.out.println(TextUi.DIVIDER);
-                    System.out.println("Here are the tasks in your list:");
-                    list.printTasks();
-                    System.out.println(TextUi.DIVIDER);
-                } else if (line.startsWith("mark")) {
-                    System.out.println(TextUi.DIVIDER);
-                    int idx = Parser.parseTaskIndex(line, list.size());
-                    list.getTask(idx).markAsDone();
-                    System.out.println(TextUi.DIVIDER);
-                } else if (line.startsWith("unmark")) {
-                    System.out.println(TextUi.DIVIDER);
-                    int idx = Parser.parseTaskIndex(line, list.size());
-                    list.getTask(idx).unmarkAsNotDone();
-                    System.out.println(TextUi.DIVIDER);
-                } else if (line.startsWith("delete")) {
-                    System.out.println(TextUi.DIVIDER);
-                    int idx = Parser.parseTaskIndex(line, list.size());
-                    list.deleteTask(idx);
-                    System.out.println(TextUi.DIVIDER);
-                } else {
-                    System.out.println(TextUi.DIVIDER);
-                    list.addTask(line);
-                    System.out.println("Got it, I have added: " + line);
-                    System.out.println(TextUi.DIVIDER);
+                case "list":
+                    printWithDivider(() -> {
+                        System.out.println("Here are the tasks in your list:");
+                        list.printTasks();
+                    });
+                    continue;
+                case "find":
+                    printWithDivider(() -> {
+                        String keyword = Parser.getKeyword(line);
+                        if (keyword.isEmpty()) {
+                            System.out.println("Please provide a keyword to search for, e.g., \"find book\".");
+                        } else {
+                            list.findTasks(keyword);
+                        }
+                    });
+                    continue;
+                case "mark":
+                    printWithDivider(() -> {
+                        int idx = Parser.parseTaskIndex(line, list.size());
+                        list.getTask(idx).markAsDone();
+                    });
+                    continue;
+                case "unmark":
+                    printWithDivider(() -> {
+                        int idx = Parser.parseTaskIndex(line, list.size());
+                        list.getTask(idx).unmarkAsNotDone();
+                    });
+                    continue;
+                case "delete":
+                    printWithDivider(() -> {
+                        int idx = Parser.parseTaskIndex(line, list.size());
+                        list.deleteTask(idx);
+                    });
+                    continue;
+                default:
+                    printWithDivider(() -> {
+                        try {
+                            list.addTask(line);
+                            System.out.println("Got it, I have added: " + line);
+                        } catch (InputException e) {
+                            System.out.println(e.getMessage());
+                        }
+                    });
+                    continue;
                 }
-            } catch (InputException e) {
-                System.out.println(e.getMessage());
-                System.out.println(TextUi.DIVIDER);
+                break;
             } catch (IllegalArgumentException e) {
                 // User input error (missing arg, bad number, out of range, etc.)
-                System.out.println(e.getMessage());
-                System.out.println(TextUi.DIVIDER);
+                printWithDivider(() -> System.out.println(e.getMessage()));
             } catch (Exception e) {
                 // Last-resort guard so the loop doesn't die on unexpected issues
-                System.out.println("An unexpected error occurred. Please try again.");
-                System.out.println(TextUi.DIVIDER);
+                printWithDivider(() -> System.out.println("An unexpected error occurred. Please try again."));
             }
         }
         storage.save(list);
         sc.close();
+    }
+
+    /**
+     * Executes the given action and wraps the output with dividers.
+     */
+    private static void printWithDivider(Runnable action) {
+        System.out.println(TextUi.DIVIDER);
+        action.run();
+        System.out.println(TextUi.DIVIDER);
     }
 }
 

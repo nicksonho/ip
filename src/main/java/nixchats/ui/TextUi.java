@@ -10,6 +10,8 @@ public class TextUi {
                                     Usage:
                                       list
                                         - Show all tasks.
+                                      find <keyword>
+                                        - Find tasks containing the keyword.
                                       todo <description>
                                         - Add a to-do task.
                                       deadline <description> /by <when>
@@ -20,6 +22,8 @@ public class TextUi {
                                         - Mark a task as done.
                                       unmark <task-number>
                                         - Mark a task as not done.
+                                      delete <task-number>
+                                        - Delete a task.
                                       bye
                                         - Exit the application.
                     """;
