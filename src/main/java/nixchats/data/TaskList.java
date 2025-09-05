@@ -8,16 +8,15 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+/**
+ * Represents a list of tasks.
+ */
 public class TaskList implements Iterable<Task>{
 
     private final List<Task> taskList;
 
     public TaskList() {
         this.taskList = new ArrayList<>();
-    }
-
-    public List<Task> getTaskList() {
-        return taskList;
     }
 
     public void addTask(String task) throws InputException {

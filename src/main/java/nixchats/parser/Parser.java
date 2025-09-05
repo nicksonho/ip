@@ -8,13 +8,22 @@ import nixchats.exception.InputException;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
 
+/**
+ * Parser utility class that handles parsing of user input commands
+ * and converts them into appropriate Task objects or indices.
+ */
 public class Parser {
 
     /**
      * Parses a command like "mark 2" or "unmark 3" and returns a zero-based index.
      * Throws IllegalArgumentException with friendly messages for user errors.
+     *
+     * @param line the input command string containing task number
+     * @param size the total number of tasks in the list
+     * @return zero-based index of the task
+     * @throws IllegalArgumentException if the input is invalid, task number is missing,
+     *                                  non-numeric, zero/negative, or out of range
      */
     public static int parseTaskIndex(String line, int size) {
         String[] parts = line.split("\\s+");
@@ -78,6 +87,14 @@ public class Parser {
                 "I'm sorry, but I don't know what that means.");
     }
 
+    /**
+     * Creates a DeadlineTask from the parsed deadline command.
+     *
+     * @param trimmed the trimmed deadline command string
+     * @return a new DeadlineTask object with parsed description and due date
+     * @throws InputException if the deadline format is invalid, missing arguments,
+     *                        or contains invalid date format
+     */
     private static DeadlineTask getDeadlineTask(String trimmed) throws InputException {
         String[] parts = getStrings(trimmed);
         String desc = parts[0].trim();
@@ -96,6 +113,14 @@ public class Parser {
         }
     }
 
+    /**
+     * Parses and validates the deadline command format to extract description and due date.
+     *
+     * @param trimmed the trimmed deadline command string
+     * @return array containing description and due date string
+     * @throws InputException if the deadline command is missing description,
+     *                        missing /by delimiter, or has invalid format
+     */
     private static String[] getStrings(String trimmed) throws InputException {
         String rest = trimmed.length() <= 8 ? "" : trimmed.substring(8).trim(); // after "deadline"
         if (rest.isEmpty()) {
@@ -110,6 +135,15 @@ public class Parser {
         return parts;
     }
 
+    /**
+     * Creates an EventTask from the parsed event command.
+     * Overloaded method that handles the initial parsing of the event command.
+     *
+     * @param trimmed the trimmed event command string
+     * @return a new EventTask object with parsed description, start and end dates
+     * @throws InputException if the event format is invalid, missing arguments,
+     *                        or contains invalid date format
+     */
     private static EventTask getEventTask(String trimmed) throws InputException {
         String rest = trimmed.length() <= 5 ? "" : trimmed.substring(5).trim(); // after "event"
         if (rest.isEmpty()) {
@@ -124,6 +158,15 @@ public class Parser {
         return getEventTask(fromParts);
     }
 
+    /**
+     * Creates an EventTask from the parsed event command parts.
+     * Overloaded method that handles the final creation of the EventTask after parsing.
+     *
+     * @param fromParts array containing description and the part after /from
+     * @return a new EventTask object with parsed description, start and end dates
+     * @throws InputException if the event dates are invalid, missing /to delimiter,
+     *                        invalid date format, or end date is before start date
+     */
     private static EventTask getEventTask(String[] fromParts) throws InputException {
         String desc = fromParts[0].trim();
 
