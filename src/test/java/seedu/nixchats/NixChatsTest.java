@@ -1,11 +1,17 @@
 package seedu.nixchats;
 
-import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 
+import org.junit.jupiter.api.Test;
+
+/**
+ * Contains unit tests for {@code NixChats}.
+ */
 public class NixChatsTest {
 
     @Test

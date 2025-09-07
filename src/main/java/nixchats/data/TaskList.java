@@ -1,20 +1,20 @@
 package nixchats.data;
 
-import nixchats.Task;
-import nixchats.exception.InputException;
-import nixchats.parser.Parser;
-
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import nixchats.Task;
+import nixchats.exception.InputException;
+import nixchats.parser.Parser;
+
+
+
 /**
  * Represents a list of tasks.
  */
-public class TaskList implements Iterable<Task>{
-
+public class TaskList implements Iterable<Task> {
     private final List<Task> taskList;
-
     public TaskList() {
         this.taskList = new ArrayList<>();
     }
@@ -27,6 +27,10 @@ public class TaskList implements Iterable<Task>{
         taskList.add(task);
     }
 
+    /**
+     * Deletes the task at the given index.
+     * @param index Index of the task to be deleted.
+     */
     public void deleteTask(int index) {
         System.out.println("Got it, deleted task " + taskList.get(index));
         taskList.remove(index);
@@ -40,6 +44,10 @@ public class TaskList implements Iterable<Task>{
         taskList.forEach(System.out::println);
     }
 
+    /**
+     * Finds tasks that contain the given keyword.
+     * @param keyword Keyword to search for.
+     */
     public void findTasks(String keyword) {
         List<Task> matchingTasks = new ArrayList<>();
         for (Task task : taskList) {
@@ -47,7 +55,6 @@ public class TaskList implements Iterable<Task>{
                 matchingTasks.add(task);
             }
         }
-        
         if (matchingTasks.isEmpty()) {
             System.out.println("No matching tasks found.");
         } else {

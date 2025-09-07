@@ -1,12 +1,5 @@
 package nixchats.storage;
 
-import nixchats.DeadlineTask;
-import nixchats.EventTask;
-import nixchats.Task;
-import nixchats.ToDoTask;
-import nixchats.data.TaskList;
-import nixchats.exception.NixChatsException;
-
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -14,12 +7,25 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 
+import nixchats.DeadlineTask;
+import nixchats.EventTask;
+import nixchats.Task;
+import nixchats.ToDoTask;
+import nixchats.data.TaskList;
+import nixchats.exception.NixChatsException;
+
+
 /**
  * Storage class for saving and loading tasks.
  */
 public class Storage {
     private final Path filePath;
 
+    /**
+     * Constructs a Storage object.
+     * @param filePath Path to the file to be used for storage.
+     * @throws IOException if the file cannot be created.
+     */
     public Storage(Path filePath) throws IOException {
         this.filePath = filePath;
         ensureFileExists();
@@ -110,23 +116,23 @@ public class Storage {
         boolean done = "1".equals(parts[1]);
 
         switch (type) {
-            case "T": {
-                String desc = parts[2];
-                return new ToDoTask(desc, done);
-            }
-            case "D": {
-                String desc = parts[2];
-                String by = parts[3];
-                return new DeadlineTask(desc, done, by);
-            }
-            case "E": {
-                String desc = parts[2];
-                String from = parts[3];
-                String to = parts[4];
-                return new EventTask(desc, done, from, to);
-            }
-            default:
-                throw new IllegalArgumentException("Unknown task type: " + type);
+        case "T": {
+            String desc = parts[2];
+            return new ToDoTask(desc, done);
+        }
+        case "D": {
+            String desc = parts[2];
+            String by = parts[3];
+            return new DeadlineTask(desc, done, by);
+        }
+        case "E": {
+            String desc = parts[2];
+            String from = parts[3];
+            String to = parts[4];
+            return new EventTask(desc, done, from, to);
+        }
+        default:
+            throw new IllegalArgumentException("Unknown task type: " + type);
         }
     }
 }

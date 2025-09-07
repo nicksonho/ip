@@ -1,19 +1,20 @@
 package nixchats;
 
-import nixchats.data.TaskList;
-import nixchats.storage.Storage;
-import nixchats.exception.NixChatsException;
-import nixchats.ui.TextUi;
-import nixchats.exception.InputException;
-import nixchats.parser.Parser;
-
 import java.io.IOException;
-import java.util.Scanner;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Scanner;
 
+import nixchats.data.TaskList;
+import nixchats.exception.InputException;
+import nixchats.exception.NixChatsException;
+import nixchats.parser.Parser;
+import nixchats.storage.Storage;
+import nixchats.ui.TextUi;
 
-
+/**
+ * Main class for the NixChats chatbot.
+ */
 public class NixChats {
     public static void main(String[] args) {
         System.out.println(TextUi.GREETING);
@@ -27,6 +28,11 @@ public class NixChats {
         }
     }
 
+    /**
+     * Starts the chatbot.
+     * @throws NixChatsException if the file cannot be read.
+     * @throws IOException if the file cannot be written.
+     */
     public static void chat() throws NixChatsException, IOException {
         Scanner sc = new Scanner(System.in);
         Path filePath = Paths.get("data", "NixChatHistory.txt");

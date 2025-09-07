@@ -1,13 +1,13 @@
 package nixchats.parser;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
 import nixchats.DeadlineTask;
 import nixchats.EventTask;
 import nixchats.Task;
 import nixchats.ToDoTask;
 import nixchats.exception.InputException;
-
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 
 /**
  * Parser utility class that handles parsing of user input commands
@@ -54,6 +54,7 @@ public class Parser {
      * Returns the created Task. Throws InputException with a user-friendly message
      * if the input is invalid.
      */
+    @SuppressWarnings({"checkstyle:AtclauseOrder", "CheckStyle"})
     public static Task parseTask(String input) throws InputException {
         if (input == null || input.trim().isEmpty()) {
             throw new InputException(InputException.Reason.EMPTY_INPUT, "Please enter a command.");
@@ -104,7 +105,7 @@ public class Parser {
             LocalDate byDate = LocalDate.parse(by);
 
             DateTimeFormatter outFmt = DateTimeFormatter.ofPattern("MMM d yyyy");
-            String byDisplay =byDate.format(outFmt);
+            String byDisplay = byDate.format(outFmt);
 
             return new DeadlineTask(desc, false, byDisplay);
         } catch (java.time.format.DateTimeParseException ex) {
@@ -180,7 +181,7 @@ public class Parser {
 
         try {
             LocalDate fromDate = LocalDate.parse(from); // expects yyyy-MM-dd
-            LocalDate toDate = LocalDate.parse(to);     // expects yyyy-MM-dd
+            LocalDate toDate = LocalDate.parse(to); // expects yyyy-MM-dd
 
             if (toDate.isBefore(fromDate)) {
                 throw new InputException(InputException.Reason.INVALID_ARGUMENT,

@@ -1,17 +1,23 @@
 package seedu.nixchats;
 
-import nixchats.DeadlineTask;
-import nixchats.EventTask;
-import nixchats.ToDoTask;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.BeforeEach;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+
+import nixchats.DeadlineTask;
+import nixchats.EventTask;
+import nixchats.ToDoTask;
+
+/**
+ * Contains unit tests for {@code Task}.
+ */
 public class TaskTest {
 
     private ToDoTask todoTask;
