@@ -1,18 +1,17 @@
 package nixchats.data;
 
-import nixchats.Task;
-import nixchats.exception.InputException;
-import nixchats.parser.Parser;
-
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import nixchats.Task;
+import nixchats.exception.InputException;
+import nixchats.parser.Parser;
+
 /**
  * Represents a list of tasks.
  */
-public class TaskList implements Iterable<Task>{
-
+public class TaskList implements Iterable<Task> {
     private final List<Task> taskList;
 
     public TaskList() {
@@ -27,6 +26,10 @@ public class TaskList implements Iterable<Task>{
         taskList.add(task);
     }
 
+    /**
+     * Deletes the task at the given index.
+     * @param index Index of the task to be deleted.
+     */
     public void deleteTask(int index) {
         System.out.println("Got it, deleted task " + taskList.get(index));
         taskList.remove(index);
@@ -40,24 +43,6 @@ public class TaskList implements Iterable<Task>{
         taskList.forEach(System.out::println);
     }
 
-    public void findTasks(String keyword) {
-        List<Task> matchingTasks = new ArrayList<>();
-        for (Task task : taskList) {
-            if (task.getDescription().toLowerCase().contains(keyword.toLowerCase())) {
-                matchingTasks.add(task);
-            }
-        }
-        
-        if (matchingTasks.isEmpty()) {
-            System.out.println("No matching tasks found.");
-        } else {
-            System.out.println("Here are the matching tasks in your list:");
-            for (int i = 0; i < matchingTasks.size(); i++) {
-                System.out.println((i + 1) + "." + matchingTasks.get(i).toString());
-            }
-        }
-    }
-
     public int size() {
         return taskList.size();
     }
@@ -68,5 +53,15 @@ public class TaskList implements Iterable<Task>{
 
     public Iterator<Task> iterator() {
         return taskList.iterator();
+    }
+
+    /**
+     * Finds tasks that contain the given keyword.
+     * @param keyword Keyword to be searched for.
+     */
+    public void findTasks(String keyword) {
+        taskList.stream()
+                .filter(task -> task.getDescription().toLowerCase().contains(keyword.toLowerCase()))
+                .forEach(System.out::println);
     }
 }
