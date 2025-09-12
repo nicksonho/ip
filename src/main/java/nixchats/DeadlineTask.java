@@ -14,10 +14,13 @@ public class DeadlineTask extends Task {
      */
     public DeadlineTask(String description, boolean isDone, String by) {
         super(description, isDone);
+        assert by != null : "Deadline 'by' date cannot be null";
+        assert !by.trim().isEmpty() : "Deadline 'by' date cannot be empty";
         this.by = by;
     }
 
     public String getBy() {
+        assert by != null : "By date should never be null after construction";
         return by;
     }
 
