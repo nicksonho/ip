@@ -15,6 +15,14 @@ import nixchats.exception.InputException;
  */
 public class Parser {
 
+    // Command lengths for substring operations
+    private static final int DEADLINE_COMMAND_LENGTH = 8; // "deadline".length()
+    private static final int EVENT_COMMAND_LENGTH = 5; // "event".length()
+    private static final int TODO_COMMAND_LENGTH = 4; // "todo".length()
+
+    // Date format pattern
+    private static final String OUTPUT_DATE_FORMAT = "MMM d yyyy";
+
     /**
      * Parses a command like "mark 2" or "unmark 3" and returns a zero-based index.
      * Throws IllegalArgumentException with friendly messages for user errors.
@@ -28,7 +36,7 @@ public class Parser {
     public static int parseTaskIndex(String line, int size) {
         assert line != null : "Input line cannot be null";
         assert size >= 0 : "Size must be non-negative: " + size;
-        
+
         String[] parts = line.split("\\s+");
         if (parts.length < 2 || parts[1].isBlank()) {
             throw new IllegalArgumentException("Please provide the task number, e.g., \"mark 2\".");
@@ -45,7 +53,7 @@ public class Parser {
         if (oneBased > size) {
             throw new IllegalArgumentException("Task number out of range. You have " + size + " task(s).");
         }
-        
+
         int zeroBasedIndex = oneBased - 1;
         assert zeroBasedIndex >= 0 && zeroBasedIndex < size : "Calculated index must be within bounds";
         return zeroBasedIndex;
@@ -53,12 +61,16 @@ public class Parser {
 
     /**
      * Parses the input line and adds a Task to the given list.
-     * Supported:
-     *   - todo <description>
-     *   - deadline <description> /by <when>
-     *   - event <description> /from <start> /to <end>
+     * Supported commands:
+     *   - todo description
+     *   - deadline description /by when
+     *   - event description /from start /to end
      * Returns the created Task. Throws InputException with a user-friendly message
      * if the input is invalid.
+     *
+     * @param input The user input string to parse
+     * @return A new Task object based on the parsed input
+     * @throws InputException if the input format is invalid or missing required parts
      */
     @SuppressWarnings({"checkstyle:AtclauseOrder", "CheckStyle"})
     public static Task parseTask(String input) throws InputException {
@@ -71,7 +83,7 @@ public class Parser {
 
         // todo
         if (lower.startsWith("todo")) {
-            String desc = trimmed.length() <= 4 ? "" : trimmed.substring(4).trim();
+            String desc = trimmed.length() <= TODO_COMMAND_LENGTH ? "" : trimmed.substring(TODO_COMMAND_LENGTH).trim();
             if (desc.isEmpty()) {
                 throw new InputException(InputException.Reason.MISSING_ARGUMENT,
                         "The description of a todo cannot be empty.");
@@ -110,7 +122,7 @@ public class Parser {
         try {
             LocalDate byDate = LocalDate.parse(by);
 
-            DateTimeFormatter outFmt = DateTimeFormatter.ofPattern("MMM d yyyy");
+            DateTimeFormatter outFmt = DateTimeFormatter.ofPattern(OUTPUT_DATE_FORMAT);
             String byDisplay = byDate.format(outFmt);
 
             return new DeadlineTask(desc, false, byDisplay);
@@ -129,7 +141,8 @@ public class Parser {
      *                        missing /by delimiter, or has invalid format
      */
     private static String[] getStrings(String trimmed) throws InputException {
-        String rest = trimmed.length() <= 8 ? "" : trimmed.substring(8).trim(); // after "deadline"
+        String rest = trimmed.length() <= DEADLINE_COMMAND_LENGTH
+                ? "" : trimmed.substring(DEADLINE_COMMAND_LENGTH).trim(); // after "deadline"
         if (rest.isEmpty()) {
             throw new InputException(InputException.Reason.MISSING_ARGUMENT,
                     "The description of a deadline cannot be empty. Usage: deadline <desc> /by <when>");
@@ -152,10 +165,12 @@ public class Parser {
      *                        or contains invalid date format
      */
     private static EventTask getEventTask(String trimmed) throws InputException {
-        String rest = trimmed.length() <= 5 ? "" : trimmed.substring(5).trim(); // after "event"
+        String rest = trimmed.length() <= EVENT_COMMAND_LENGTH
+                ? "" : trimmed.substring(EVENT_COMMAND_LENGTH).trim(); // after "event"
         if (rest.isEmpty()) {
             throw new InputException(InputException.Reason.MISSING_ARGUMENT,
-                    "The description of an event cannot be empty. Usage: event <desc> /from <start> /to <end>");
+                    "The description of an event cannot be empty. "
+                            + "Usage: event <desc> /from <start> /to <end>");
         }
         String[] fromParts = rest.split("\\s+/from\\s+", 2);
         if (fromParts.length != 2 || fromParts[0].trim().isEmpty()) {
@@ -194,7 +209,7 @@ public class Parser {
                         "End date must be on or after the start date.");
             }
 
-            DateTimeFormatter outFmt = DateTimeFormatter.ofPattern("MMM d yyyy");
+            DateTimeFormatter outFmt = DateTimeFormatter.ofPattern(OUTPUT_DATE_FORMAT);
             String fromDisplay = fromDate.format(outFmt);
             String toDisplay = toDate.format(outFmt);
 
@@ -214,13 +229,13 @@ public class Parser {
      */
     public static String getCommand(String line) {
         assert line != null : "Input line cannot be null";
-        
+
         if (line.isBlank()) {
             return "unknown";
         }
         String[] parts = line.split("\\s+", 2);
         assert parts.length > 0 : "Split should always produce at least one part";
-        
+
         String command = parts[0].toLowerCase();
         assert command != null && !command.isEmpty() : "Command should not be null or empty";
         return command;
@@ -235,10 +250,10 @@ public class Parser {
      */
     public static String getKeyword(String line) {
         assert line != null : "Input line cannot be null";
-        
+
         String[] parts = line.split("\\s+", 2);
         assert parts.length > 0 : "Split should always produce at least one part";
-        
+
         String result = parts.length > 1 ? parts[1].trim() : "";
         assert result != null : "Result should never be null";
         return result;

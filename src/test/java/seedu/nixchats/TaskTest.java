@@ -2,6 +2,7 @@ package seedu.nixchats;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.ByteArrayOutputStream;
@@ -162,9 +163,8 @@ public class TaskTest {
         assertEquals("submit assignment", deadlineTask.getDescription());
         assertEquals("team meeting", eventTask.getDescription());
 
-        // Test with empty description
-        ToDoTask emptyTask = new ToDoTask("", false);
-        assertEquals("", emptyTask.getDescription());
+        // Test that empty description is not allowed (will trigger assertion)
+        assertThrows(AssertionError.class, () -> new ToDoTask("", false));
 
         // Test with description containing special characters
         ToDoTask specialTask = new ToDoTask("buy coffee @ 3pm & donuts!", false);

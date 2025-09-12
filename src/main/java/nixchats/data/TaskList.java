@@ -18,10 +18,19 @@ public class TaskList implements Iterable<Task> {
         this.taskList = new ArrayList<>();
     }
 
+    /**
+     * Adds a task to the list by parsing the command string.
+     * @param task The command string to parse and add as a task.
+     * @throws InputException if the task command is invalid.
+     */
     public void addTask(String task) throws InputException {
         taskList.add(Parser.parseTask(task));
     }
 
+    /**
+     * Adds a task object directly to the list.
+     * @param task The task object to add.
+     */
     public void addTask(Task task) {
         assert task != null : "Task cannot be null";
         taskList.add(task);
@@ -45,15 +54,28 @@ public class TaskList implements Iterable<Task> {
         taskList.forEach(System.out::println);
     }
 
+    /**
+     * Returns the number of tasks in the list.
+     * @return The size of the task list.
+     */
     public int size() {
         return taskList.size();
     }
 
+    /**
+     * Gets a task at the specified index.
+     * @param index The index of the task to retrieve.
+     * @return The task at the specified index.
+     */
     public Task getTask(int index) {
         assert index >= 0 && index < taskList.size() : "Index must be within bounds: " + index;
         return taskList.get(index);
     }
 
+    /**
+     * Returns an iterator over the tasks in the list.
+     * @return An iterator for the task list.
+     */
     public Iterator<Task> iterator() {
         assert taskList != null : "TaskList should never be null";
         return taskList.iterator();
