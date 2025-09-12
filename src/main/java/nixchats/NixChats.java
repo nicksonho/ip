@@ -2,7 +2,13 @@ package nixchats;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Stack;
 
+import nixchats.command.UndoableCommand;
+import nixchats.command.AddTaskCommand;
+import nixchats.command.DeleteTaskCommand;
+import nixchats.command.MarkTaskCommand;
+import nixchats.command.UnmarkTaskCommand;
 import nixchats.data.TaskList;
 import nixchats.exception.InputException;
 import nixchats.exception.NixChatsException;
@@ -17,6 +23,7 @@ public class NixChats {
     private TaskList taskList;
     private Storage storage;
     private String lastCommandType = "info";
+    private Stack<UndoableCommand> commandHistory = new Stack<>();
 
     /**
      * Constructor for GUI usage.
@@ -91,6 +98,9 @@ public class NixChats {
         case "delete":
             handleDeleteCommand(line, response);
             break;
+        case "undo":
+            handleUndoCommand(response);
+            break;
         default:
             handleAddCommand(line, response);
             break;
@@ -138,7 +148,9 @@ public class NixChats {
         lastCommandType = "mark";
         try {
             int idx = Parser.parseTaskIndex(line, taskList.size());
-            taskList.getTask(idx).markAsDone();
+            MarkTaskCommand command = new MarkTaskCommand(taskList, idx);
+            command.execute();
+            commandHistory.push(command);
             response.append("Nice! I've marked this task as done:\n  ");
             response.append(taskList.getTask(idx).toString());
         } catch (IllegalArgumentException e) {
@@ -154,7 +166,9 @@ public class NixChats {
         lastCommandType = "unmark";
         try {
             int idx = Parser.parseTaskIndex(line, taskList.size());
-            taskList.getTask(idx).unmarkAsNotDone();
+            UnmarkTaskCommand command = new UnmarkTaskCommand(taskList, idx);
+            command.execute();
+            commandHistory.push(command);
             response.append("OK, I've marked this task as not done yet:\n  ");
             response.append(taskList.getTask(idx).toString());
         } catch (IllegalArgumentException e) {
@@ -171,7 +185,9 @@ public class NixChats {
         try {
             int idx = Parser.parseTaskIndex(line, taskList.size());
             Task deletedTask = taskList.getTask(idx);
-            taskList.deleteTask(idx);
+            DeleteTaskCommand command = new DeleteTaskCommand(taskList, idx);
+            command.execute();
+            commandHistory.push(command);
             response.append("Got it, deleted task ").append(deletedTask);
         } catch (IllegalArgumentException e) {
             response.append(e.getMessage());
@@ -185,7 +201,10 @@ public class NixChats {
     private void handleAddCommand(String line, StringBuilder response) {
         lastCommandType = "add";
         try {
-            taskList.addTask(line);
+            nixchats.Task task = Parser.parseTask(line);
+            AddTaskCommand command = new AddTaskCommand(taskList, task);
+            command.execute();
+            commandHistory.push(command);
             response.append("Got it, I have added: ").append(line);
         } catch (InputException e) {
             response.append(e.getMessage());
@@ -194,10 +213,25 @@ public class NixChats {
     }
 
     /**
+     * Handles the undo command.
+     */
+    private void handleUndoCommand(StringBuilder response) {
+        lastCommandType = "undo";
+        if (commandHistory.isEmpty()) {
+            response.append("Nothing to undo.");
+        } else {
+            UndoableCommand lastCommand = commandHistory.pop();
+            lastCommand.undo();
+            response.append("Undone: ").append(lastCommand.getDescription());
+        }
+    }
+
+    /**
      * Saves the task list if the command modified data.
      */
     private void saveIfModified(String command) throws NixChatsException {
         boolean isReadOnlyCommand = command.equals("list") || command.equals("find") || command.equals("bye");
+        // Note: undo commands modify data but we still want to save the new state
         if (!isReadOnlyCommand) {
             assert storage != null : "Storage should be available for saving";
             assert taskList != null : "TaskList should be available for saving";

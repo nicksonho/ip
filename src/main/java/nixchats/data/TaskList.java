@@ -37,12 +37,34 @@ public class TaskList implements Iterable<Task> {
     }
 
     /**
+     * Inserts a task at the specified index.
+     * @param index The index where to insert the task.
+     * @param task The task object to insert.
+     */
+    public void insertTask(int index, Task task) {
+        assert task != null : "Task cannot be null";
+        assert index >= 0 && index <= taskList.size() : "Index must be within bounds: " + index;
+        taskList.add(index, task);
+    }
+
+    /**
      * Deletes the task at the given index.
      * @param index Index of the task to be deleted.
      */
     public void deleteTask(int index) {
+        deleteTask(index, true);
+    }
+
+    /**
+     * Deletes the task at the given index.
+     * @param index Index of the task to be deleted.
+     * @param showMessage Whether to print a confirmation message.
+     */
+    public void deleteTask(int index, boolean showMessage) {
         assert index >= 0 && index < taskList.size() : "Index must be within bounds: " + index;
-        System.out.println("Got it, deleted task " + taskList.get(index));
+        if (showMessage) {
+            System.out.println("Got it, deleted task " + taskList.get(index));
+        }
         taskList.remove(index);
     }
 
