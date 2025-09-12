@@ -16,7 +16,7 @@ import nixchats.ui.TextUi;
  * CLI interface for NixChats.
  */
 public class NixChatsCli {
-    
+
     /**
      * Starts the chatbot CLI.
      * @throws NixChatsException if the file cannot be read.

@@ -50,7 +50,7 @@ public class Storage {
     public void save(TaskList list) throws NixChatsException {
         assert list != null : "TaskList cannot be null";
         assert filePath != null : "File path should be initialized";
-        
+
         try (BufferedWriter writer = Files.newBufferedWriter(filePath, StandardCharsets.UTF_8)) {
             for (Task t : list) {
                 writer.write(encode(t));
@@ -98,7 +98,7 @@ public class Storage {
     private String encode(Task t) {
         assert t != null : "Task cannot be null";
         assert t.getDescription() != null : "Task description cannot be null";
-        
+
         String done = t.isDone() ? "1" : "0";
         if (t instanceof ToDoTask) {
             return String.join(" | ", "T", done, t.getDescription());
@@ -123,13 +123,13 @@ public class Storage {
     private Task decode(String line) {
         assert line != null : "Input line cannot be null";
         assert !line.trim().isEmpty() : "Input line cannot be empty";
-        
+
         String[] parts = line.split("\\s*\\|\\s*");
         assert parts.length >= 3 : "Line must have at least 3 parts: type, done status, description";
-        
+
         String type = parts[0];
         assert type != null && !type.isEmpty() : "Task type cannot be null or empty";
-        
+
         boolean done = "1".equals(parts[1]);
         assert parts[2] != null : "Task description cannot be null";
 

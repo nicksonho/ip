@@ -6,7 +6,7 @@ public class TextUi {
             """
                                     Hello! I'm NixChats, a chatbot that can help you track your tasks!
                                     What can I do for you?
-                    
+
                                     Usage:
                                       list
                                         - Show all tasks.
