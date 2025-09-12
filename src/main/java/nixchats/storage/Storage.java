@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.List;
 
 import nixchats.DeadlineTask;
 import nixchats.EventTask;
@@ -73,16 +72,21 @@ public class Storage {
                 ensureFileExists();
                 return result;
             }
-            // reads the entire file into a list of Strings, one entry per line, decoded as UTF-8
-            List<String> lines = Files.readAllLines(filePath, StandardCharsets.UTF_8);
-            for (String raw : lines) {
-                String line = raw == null ? "" : raw.trim();
-                if (line.isEmpty()) {
-                    continue;
-                }
-                Task t = decode(line);
-                result.addTask(t);
-            }
+            
+            // Use streams to process file lines more efficiently
+            Files.lines(filePath, StandardCharsets.UTF_8)
+                    .map(String::trim)
+                    .filter(line -> !line.isEmpty())
+                    .forEach(line -> {
+                        try {
+                            Task t = decode(line);
+                            result.addTask(t);
+                        } catch (Exception e) {
+                            // Skip invalid lines silently to maintain robustness
+                            System.err.println("Warning: Skipping invalid task line: " + line);
+                        }
+                    });
+            
             return result;
         } catch (IOException e) {
             throw new NixChatsException("Failed to load tasks.", e);

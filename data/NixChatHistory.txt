@@ -3,3 +3,4 @@ T | 0 | eat
 T | 0 | go for piano lessons
 D | 0 | NOC applications | Sep 25 2025
 T | 0 | test task
+T | 0 | read book

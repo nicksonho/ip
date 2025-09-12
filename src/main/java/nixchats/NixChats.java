@@ -218,40 +218,30 @@ public class NixChats {
      */
     private String getTaskListString() {
         assert taskList != null : "TaskList should not be null";
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < taskList.size(); i++) {
-            if (i > 0) {
-                sb.append("\n");
-            }
-            sb.append(taskList.getTask(i).toString());
-        }
-        return sb.toString();
+        
+        return java.util.stream.IntStream.range(0, taskList.size())
+                .mapToObj(i -> taskList.getTask(i).toString())
+                .collect(java.util.stream.Collectors.joining("\n"));
     }
 
     /**
      * Helper method to get find results as string.
      */
     private String getFindResultsString(String keyword) {
-        StringBuilder sb = new StringBuilder();
-        java.util.List<Task> matchingTasks = new java.util.ArrayList<>();
-
-        for (int i = 0; i < taskList.size(); i++) {
-            Task task = taskList.getTask(i);
-            if (task.getDescription().toLowerCase().contains(keyword.toLowerCase())) {
-                matchingTasks.add(task);
-            }
-        }
+        java.util.List<Task> matchingTasks = taskList.findTasks(keyword);
 
         if (matchingTasks.isEmpty()) {
-            sb.append("No matching tasks found.");
-        } else {
-            sb.append("Here are the matching tasks in your list:\n");
-            for (int i = 0; i < matchingTasks.size(); i++) {
-                if (i > 0) {
-                    sb.append("\n");
-                }
-                sb.append((i + 1)).append(".").append(matchingTasks.get(i).toString());
+            return "No matching tasks found.";
+        }
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("Here are the matching tasks in your list:\n");
+        
+        for (int i = 0; i < matchingTasks.size(); i++) {
+            if (i > 0) {
+                sb.append("\n");
             }
+            sb.append((i + 1)).append(".").append(matchingTasks.get(i).toString());
         }
 
         return sb.toString();
