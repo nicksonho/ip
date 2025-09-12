@@ -26,6 +26,9 @@ public class Parser {
      *                                  non-numeric, zero/negative, or out of range
      */
     public static int parseTaskIndex(String line, int size) {
+        assert line != null : "Input line cannot be null";
+        assert size >= 0 : "Size must be non-negative: " + size;
+        
         String[] parts = line.split("\\s+");
         if (parts.length < 2 || parts[1].isBlank()) {
             throw new IllegalArgumentException("Please provide the task number, e.g., \"mark 2\".");
@@ -42,7 +45,10 @@ public class Parser {
         if (oneBased > size) {
             throw new IllegalArgumentException("Task number out of range. You have " + size + " task(s).");
         }
-        return oneBased - 1; // zero-based
+        
+        int zeroBasedIndex = oneBased - 1;
+        assert zeroBasedIndex >= 0 && zeroBasedIndex < size : "Calculated index must be within bounds";
+        return zeroBasedIndex;
     }
 
     /**
@@ -207,11 +213,17 @@ public class Parser {
      * @return the first word (command) in lowercase
      */
     public static String getCommand(String line) {
+        assert line != null : "Input line cannot be null";
+        
         if (line.isBlank()) {
             return "unknown";
         }
         String[] parts = line.split("\\s+", 2);
-        return parts[0].toLowerCase();
+        assert parts.length > 0 : "Split should always produce at least one part";
+        
+        String command = parts[0].toLowerCase();
+        assert command != null && !command.isEmpty() : "Command should not be null or empty";
+        return command;
     }
 
     /**
@@ -222,8 +234,14 @@ public class Parser {
      * @return the keyword part after the command, or empty string if none
      */
     public static String getKeyword(String line) {
+        assert line != null : "Input line cannot be null";
+        
         String[] parts = line.split("\\s+", 2);
-        return parts.length > 1 ? parts[1].trim() : "";
+        assert parts.length > 0 : "Split should always produce at least one part";
+        
+        String result = parts.length > 1 ? parts[1].trim() : "";
+        assert result != null : "Result should never be null";
+        return result;
     }
 
 

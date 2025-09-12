@@ -28,6 +28,9 @@ public class NixChats {
         } catch (Exception e) {
             taskList = new TaskList();
         }
+        // Post-condition: taskList and storage should never be null
+        assert taskList != null : "TaskList should never be null after construction";
+        assert storage != null : "Storage should never be null after construction";
     }
 
     /**
@@ -37,11 +40,17 @@ public class NixChats {
      * @return Chatbot response string.
      */
     public String getResponse(String input) {
+        // Pre-conditions: ensure object state is valid
+        assert taskList != null : "TaskList should be initialized";
+        assert storage != null : "Storage should be initialized";
+        
         String line = input == null ? "" : input.trim();
         StringBuilder response = new StringBuilder();
         
         try {
             String command = Parser.getCommand(line);
+            assert command != null : "Parser should never return null command";
+            
             switch (command) {
             case "bye":
                 lastCommandType = "bye";
@@ -115,6 +124,8 @@ public class NixChats {
             
             // Save after any modification
             if (!command.equals("list") && !command.equals("find") && !command.equals("bye")) {
+                assert storage != null : "Storage should be available for saving";
+                assert taskList != null : "TaskList should be available for saving";
                 storage.save(taskList);
             }
             
@@ -123,13 +134,17 @@ public class NixChats {
             lastCommandType = "error";
         }
         
-        return response.toString();
+        String result = response.toString();
+        assert result != null : "Response should never be null";
+        assert lastCommandType != null : "Command type should always be set";
+        return result;
     }
 
     /**
      * Returns the type of the last executed command for GUI styling.
      */
     public String getCommandType() {
+        assert lastCommandType != null : "Command type should never be null";
         return lastCommandType;
     }
 
@@ -137,6 +152,7 @@ public class NixChats {
      * Helper method to get task list as string.
      */
     private String getTaskListString() {
+        assert taskList != null : "TaskList should not be null";
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < taskList.size(); i++) {
             if (i > 0) sb.append("\n");
