@@ -84,12 +84,14 @@ public class TaskList implements Iterable<Task> {
     /**
      * Finds tasks that contain the given keyword.
      * @param keyword Keyword to be searched for.
+     * @return List of tasks that match the keyword (case-insensitive).
      */
-    public void findTasks(String keyword) {
+    public java.util.List<Task> findTasks(String keyword) {
         assert keyword != null : "Keyword cannot be null";
         assert !keyword.trim().isEmpty() : "Keyword cannot be empty after trimming";
-        taskList.stream()
+        
+        return taskList.stream()
                 .filter(task -> task.getDescription().toLowerCase().contains(keyword.toLowerCase()))
-                .forEach(System.out::println);
+                .collect(java.util.stream.Collectors.toList());
     }
 }
