@@ -1,5 +1,7 @@
 package nixchats;
 
+import nixchats.util.DateFormatter;
+
 /**
  * Represents a deadline task.
  */
@@ -26,6 +28,6 @@ public class DeadlineTask extends Task {
 
     @Override
     public String toString() {
-        return "[D]" + super.toString() + " (by: " + by + ")";
+        return "[D]" + super.toString() + " (by: " + DateFormatter.formatDate(by) + ")";
     }
 }

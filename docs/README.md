@@ -2,7 +2,7 @@
 
 NixChats is a **desktop application for managing your tasks, optimized for use via a Command Line Interface** (CLI) while still having the benefits of a Graphical User Interface (GUI). If you can type fast, NixChats can get your task management done faster than traditional GUI applications.
 
-![Screenshot of NixChats](/Ui.png)
+![Screenshot of NixChats](Ui.png)
 
 ## Quick Start
 
@@ -22,8 +22,8 @@ NixChats is a **desktop application for managing your tasks, optimized for use v
 >   e.g. in `todo DESCRIPTION`, `DESCRIPTION` is a parameter which can be used as `todo buy groceries`.
 > * Items in square brackets are optional.<br>
 >   e.g `find KEYWORD` can be used as `find book` or `find assignment`.
-> * Dates should be in `YYYY-MM-DD` format.<br>
->   e.g. `2025-12-31` for December 31st, 2025.
+> * Dates should be entered in `YYYY-MM-DD` format (e.g., `2025-12-31`).<br>
+>   When displayed, dates will be formatted as `MMM dd yyyy` (e.g., `Dec 31 2025`).
 
 ### Adding a todo task: `todo`
 
@@ -64,6 +64,11 @@ Adds an event task with start and end dates to your task list.
 Got it, I have added: event team meeting /from 2025-01-15 /to 2025-01-16
 ```
 
+**Expected output:**
+```
+Got it, I have added: event team meeting /from 2025-01-15 /to 2025-01-16
+```
+
 ### Listing all tasks: `list`
 
 Shows a list of all tasks in your task list.
@@ -74,8 +79,8 @@ Shows a list of all tasks in your task list.
 ```
 Here are the tasks in your list:
 [T][ ] buy groceries
-[D][ ] submit assignment (by: 2025-01-31)
-[E][ ] team meeting (from: 2025-01-15 to: 2025-01-16)
+[D][ ] submit assignment (by: Jan 31 2025)
+[E][ ] team meeting (from: Jan 15 2025 to: Jan 16 2025)
 ```
 
 ### Marking a task as done: `mark`
@@ -93,7 +98,7 @@ Marks the specified task as completed.
 **Expected output:**
 ```
 Nice! I've marked this task as done:
-  [D][X] submit assignment (by: 2025-01-31)
+  [D][X] submit assignment (by: Jan 31 2025)
 ```
 
 ### Unmarking a task: `unmark`
@@ -111,7 +116,7 @@ Marks the specified task as not completed yet.
 **Expected output:**
 ```
 OK, I've marked this task as not done yet:
-  [D][ ] submit assignment (by: 2025-01-31)
+  [D][ ] submit assignment (by: Jan 31 2025)
 ```
 
 ### Deleting a task: `delete`
@@ -128,7 +133,7 @@ Deletes the specified task from your task list.
 
 **Expected output:**
 ```
-Got it, deleted task [E][ ] team meeting (from: 2025-01-15 to: 2025-01-16)
+Got it, deleted task [E][ ] team meeting (from: Jan 15 2025 to: Jan 16 2025)
 ```
 
 ### Finding tasks: `find`
@@ -145,7 +150,7 @@ Finds tasks whose descriptions contain the given keyword.
 **Expected output:**
 ```
 Here are the matching tasks in your list:
-1.[D][ ] submit assignment (by: 2025-01-31)
+1.[D][ ] submit assignment (by: Jan 31 2025)
 ```
 
 ### Undoing previous action: `undo`
@@ -175,3 +180,44 @@ Exits the program.
 ```
 Bye! Hope to see you again soon!
 ```
+
+### Saving the data
+
+NixChats data are saved in the hard disk automatically after any command that changes the data. There is no need to save manually.
+
+### Editing the data file
+
+NixChats data are saved automatically as a text file `[JAR file location]/data/NixChatHistory.txt`. Advanced users are welcome to update data directly by editing that data file.
+
+> ⚠️ **Caution:**
+> If your changes to the data file makes its format invalid, NixChats will discard all data and start with an empty data file at the next run. Hence, it is recommended to take a backup of the file before editing it.
+
+----
+
+## FAQ
+
+**Q**: How do I transfer my data to another Computer?<br>
+**A**: Install the app in the other computer and overwrite the empty data file it creates with the file that contains the data of your previous NixChats home folder.
+
+**Q**: Can I use different date formats?<br>
+**A**: No, NixChats only accepts dates in `YYYY-MM-DD` format (e.g., `2025-12-31`) for input, but displays them in the more readable `MMM dd yyyy` format (e.g., `Dec 31 2025`).
+
+**Q**: What happens if I accidentally delete a task?<br>
+**A**: You can use the `undo` command to restore the most recently deleted task.
+
+----
+
+## Command Summary
+
+| Action | Format, Examples |
+|--------|------------------|
+| **Add Todo** | `todo DESCRIPTION` <br> e.g., `todo buy groceries` |
+| **Add Deadline** | `deadline DESCRIPTION /by DATE` <br> e.g., `deadline submit assignment /by 2025-01-31` |
+| **Add Event** | `event DESCRIPTION /from START_DATE /to END_DATE` <br> e.g., `event team meeting /from 2025-01-15 /to 2025-01-16` |
+| **List** | `list` |
+| **Mark** | `mark INDEX` <br> e.g., `mark 3` |
+| **Unmark** | `unmark INDEX` <br> e.g., `unmark 1` |
+| **Delete** | `delete INDEX` <br> e.g., `delete 2` |
+| **Find** | `find KEYWORD` <br> e.g., `find assignment` |
+| **Undo** | `undo` |
+| **Exit** | `bye` |

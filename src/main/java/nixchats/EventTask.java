@@ -1,5 +1,7 @@
 package nixchats;
 
+import nixchats.util.DateFormatter;
+
 /**
  * Represents an event task.
  */
@@ -36,6 +38,7 @@ public class EventTask extends Task {
 
     @Override
     public String toString() {
-        return "[E]" + super.toString() + " (from: " + from + " to: " + to + ")";
+        return "[E]" + super.toString() + " (from: " + DateFormatter.formatDate(from)
+                + " to: " + DateFormatter.formatDate(to) + ")";
     }
 }
