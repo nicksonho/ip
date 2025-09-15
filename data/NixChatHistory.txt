@@ -1,2 +1,0 @@
-T | 0 | eat
-D | 1 | noc apps | Sep 22 2025
