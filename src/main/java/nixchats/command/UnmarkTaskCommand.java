@@ -9,7 +9,7 @@ import nixchats.data.TaskList;
 public class UnmarkTaskCommand implements UndoableCommand {
     private final TaskList taskList;
     private final int index;
-    private boolean previousState;
+    private boolean isPreviousState;
 
     public UnmarkTaskCommand(TaskList taskList, int index) {
         this.taskList = taskList;
@@ -19,14 +19,14 @@ public class UnmarkTaskCommand implements UndoableCommand {
     @Override
     public void execute() {
         Task task = taskList.getTask(index);
-        previousState = task.isDone(); // Save the previous state
+        isPreviousState = task.isDone(); // Save the previous state
         task.unmarkAsNotDone();
     }
 
     @Override
     public void undo() {
         Task task = taskList.getTask(index);
-        if (previousState) {
+        if (isPreviousState) {
             task.markAsDone();
         } else {
             task.unmarkAsNotDone();

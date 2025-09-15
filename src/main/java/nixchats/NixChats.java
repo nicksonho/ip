@@ -281,10 +281,6 @@ public class NixChats {
         return sb.toString();
     }
 
-    /**
-     * Main method for command-line execution.
-     * @param args Command line arguments (not used).
-     */
     public static void main(String[] args) {
         try {
             NixChatsCli.chat();
