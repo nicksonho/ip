@@ -7,9 +7,11 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
+<!-- AI-Enhanced Layout: Claude analyzed JavaFX layout issues and suggested these changes -->
+<!-- Key improvements: dynamic sizing, better text alignment, controlled width for wrapping -->
 <fx:root alignment="TOP_RIGHT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="400.0" stylesheets="@../css/dialog-box.css" type="javafx.scene.layout.HBox" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1">
   <children>
-    <Label fx:id="dialog" alignment="CENTER" contentDisplay="CENTER" lineSpacing="0.1" text="Hello Welcome to Duke Chat with FX" wrapText="true">
+    <Label fx:id="dialog" alignment="CENTER_LEFT" contentDisplay="CENTER" lineSpacing="0.1" text="Hello Welcome to Duke Chat with FX" wrapText="true" maxWidth="300.0" minHeight="-Infinity" prefHeight="-1.0">
          <font>
             <Font name="KoHo SemiBold" size="20.0" />
          </font>
@@ -19,9 +21,10 @@
          <padding>
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
          </padding></Label>
+    <!-- AI suggestion: Reduced top margin for better visual alignment with dynamic text height -->
     <ImageView fx:id="displayPicture" fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
          <HBox.margin>
-            <Insets top="30.0" />
+            <Insets top="10.0" />
          </HBox.margin>
          <effect>
             <Blend />

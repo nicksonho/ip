@@ -1,9 +1,2 @@
-T | 0 | test task
 T | 0 | eat
-T | 0 | go for piano lessons
-D | 0 | NOC applications | Sep 25 2025
-T | 0 | test task
-T | 0 | read book
-T | 1 | test undo
-T | 0 | test undo
-T | 0 | test undo task
+D | 1 | noc apps | Sep 22 2025

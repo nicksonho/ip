@@ -1,9 +1,14 @@
+/* AI-Enhanced CSS: Claude suggested dynamic height properties to fix text overflow */
 .label {
     -fx-background-color: #00ffbf;
     -fx-border-color: #228068;
     -fx-border-width: 2px;
     -fx-background-radius: 1em 1em 0 1em;
     -fx-border-radius: 1em 1em 0 1em;
+    /* AI suggestion: Remove fixed height constraints to allow vertical expansion */
+    -fx-pref-height: -1;
+    -fx-min-height: -fx-pref-height;
+    -fx-max-height: -fx-pref-height;
 }
 
 .reply-label {
